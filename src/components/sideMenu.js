@@ -22,7 +22,9 @@ const SideMenu = () => {
         user,
         userDispatch,
     } = useContext(UserContext);
-    const Menus = ['User Form',
+    const Menus = [
+        'User GRUD',
+        'User Form',
         'Mouse Move Event',
         'Hooks Interval',
         'Hooks Counter',
