@@ -13,6 +13,8 @@ import ReducersHooksAPI from './Components/ReducresHooksAPI';
 import { ComponentA } from './Components/useCallback/ComponentA';
 import SideMenu from './Components/sideMenu';
 import Employee from './Pages/employee';
+import Users from './Components/User/users'
+
 import './App/App.css'
 export default function HomeRouter(props) {
 
@@ -27,6 +29,10 @@ export default function HomeRouter(props) {
                                 <span>Text</span>
                             </div>
                         </Route>
+                        <Route exact path='/userGrud'>                            
+                        <Users />                            
+                        </Route>
+                        <Route path='/userGrud/add' component={Employee} />
                         <Route exact path='/userForm'>
                             <Employee />
                         </Route>
