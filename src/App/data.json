@@ -1,0 +1,39 @@
+[
+    {
+      "id": 1,
+      "firstName": "selvam",
+      "lastName": "mariappan",
+      "dob": "15 may 1992",
+      "designation": 5,
+      "experience": "10",
+      "Photo": ""
+    },
+    {
+      "id": 2,
+      "firstName": "anjac",
+      "lastName": "ravi",
+      "dob": "1 Apr 1992",
+      "designation": 3,
+      "experience": "4",
+      "Photo": ""
+    },
+    {
+      "id": 3,
+      "firstName": "Ravi",
+      "lastName": "user",
+      "dob": "11 Mar 1952",
+      "designation": 4,
+      "experience": "16",
+      "Photo": ""
+    },
+    {
+      "id": 4,
+      "firstName": "test",
+      "lastName": "user",
+      "dob": "12 apr 2000",
+      "designation": 1,
+      "experience": "1",
+      "Photo": ""
+    }
+  ]
+  

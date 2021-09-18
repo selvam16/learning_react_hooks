@@ -4,6 +4,9 @@ import './App.css';
 import Headers from '../Components/header';
 import { makeStyles, createTheme, ThemeProvider, CssBaseline } from '@material-ui/core';
 import HomeRouter from '../HomeRouter';
+import data from './data.json';
+import { findIndex, filter } from 'lodash';
+
 const styles = makeStyles({
   app_main: {
     marginLeft: '200px',
@@ -69,20 +72,61 @@ const reduce = (state = initialState, action) => {
        return state;
   }
 }
+export const FormUserContext = React.createContext();
 
+const userInitialState = data;
+
+const userReduce = (state = userInitialState, action) => {
+    const {
+        type,
+        value
+    } = action;
+    let newState = [...state]
+
+    let currentUserIndex = null;
+
+    console.log(type, value)
+
+    switch (type) {
+        case 'add':
+          console.log(newState)
+          const testcons = [...newState, value];
+          console.log(testcons)
+            return [...newState, value]
+        case "edit":
+            currentUserIndex = findIndex(newState, { id: value.id });
+            newState[currentUserIndex] = { ...newState[currentUserIndex], ...value }
+            return newState;
+        case 'delete':
+            let currentUser = filter(newState, state => {
+              console.log(state.id)
+              return state.id !== parseInt(value)
+            });
+            console.log(currentUser)
+            //newState = newState.splice(currentUserIndex, 1)
+            return currentUser;
+        default:
+            return state;
+
+    }
+}
 export const UserContext = React.createContext();
 function App() {
   const classes = styles();
   const [user, userDispatch] = useReducer(reduce, initialState)
+  const [userData, userDispatchAction] = useReducer(userReduce, userInitialState);
 
   return (
     <ThemeProvider theme={theme}>
       <UserContext.Provider value={{user, userDispatch}}>
+      <FormUserContext.Provider value={{ userData, userDispatchAction }}>
+
       <div className={classes.app_main}>
         <Headers />
         <HomeRouter />
       </div>
       <CssBaseline />
+      </FormUserContext.Provider>
 
       </UserContext.Provider>
     </ThemeProvider>
