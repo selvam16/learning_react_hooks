@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "title": "Trainee"
+    },
+    {
+        "id": 2,
+        "title": "Software Engineer"
+    },
+    {
+        "id": 3,
+        "title": "Senior Software Engineer"
+    },
+    {
+        "id": 4,
+        "title": "Associate Lead"
+    },
+    {
+        "id": 5,
+        "title": "Lead"
+    },
+    {
+        "id": 6,
+        "title": "BA"
+    },
+    {
+        "id": 7,
+        "title": "Manager"
+    }
+]
