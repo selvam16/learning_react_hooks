@@ -10,9 +10,10 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { IconButton, Button, Icon, Grid } from '@material-ui/core';
 import { Edit, Delete } from '@material-ui/icons'
-import { capitalize } from 'lodash';
+import { capitalize, filter } from 'lodash';
 import { FormUserContext } from '../../App/App';
 import moment from "moment";
+import designationItems from '../../data/department.json'
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -76,7 +77,7 @@ export default function Users() {
                                 </TableCell>
                                 <TableCell>{capitalize(row.lastName)}</TableCell>
                                 <TableCell>{moment(row.dob).format("DD MMM YYYY")}</TableCell>
-                                <TableCell>{capitalize(row.designation)}</TableCell>
+                                <TableCell>{capitalize(filter(designationItems, item=> item.id === row.designation)[0].title)}</TableCell>
                                 <TableCell>{capitalize(row.experience)}</TableCell>
                                 <TableCell align="center">
                                     <IconButton onClick={() => handleUpdate(row.id)}>
@@ -88,6 +89,9 @@ export default function Users() {
                                 </TableCell>
                             </TableRow>
                         ))}
+                        {
+                            !userData.length && <span style={{textAlign: 'center', margin: '10px'}}>No Data Found</span>
+                        }
                     </TableBody>
                 </Table>
             </TableContainer>

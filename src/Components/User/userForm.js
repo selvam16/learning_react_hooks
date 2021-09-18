@@ -7,16 +7,7 @@ import { useParams, useHistory } from 'react-router-dom';
 
 import { FormUserContext } from '../../App/App';
 import { filter } from "lodash";
-
-const designationItems = [
-  { id: 1, title: "Trainee" },
-  { id: 2, title: "Software Engineer" },
-  { id: 3, title: "Senior Software Engineer" },
-  { id: 4, title: "Associate Lead" },
-  { id: 5, title: "Lead" },
-  { id: 6, title: "BA" },
-  { id: 7, title: "Manager" },
-];
+import designationItems from '../../data/department.json'
 
 const UserForm = () => {
   const { id } = useParams();
@@ -67,7 +58,9 @@ const UserForm = () => {
     if (validate()) {
       //window.alert("sdfdsf");
       const type = parseInt(id) ? 'edit' : 'add';
-      values.id = Math.floor(Math.random() * 100)
+      if(type === 'add'){
+        values.id = Math.floor(Math.random() * 100)
+      }
       userDispatchAction({ type: type, value: values })
       setTimeout(()=>{
         history.push('/userGrud')
