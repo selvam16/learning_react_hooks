@@ -14,6 +14,7 @@ import { ComponentA } from './Components/useCallback/ComponentA';
 import SideMenu from './Components/sideMenu';
 import Employee from './Pages/employee';
 import Users from './Components/User/users'
+import UserForm from './Components/User/userForm'
 
 import './App/App.css'
 export default function HomeRouter(props) {
@@ -22,7 +23,7 @@ export default function HomeRouter(props) {
         <>
             <Router>
                 <SideMenu />
-                <div style={{ padding: '10px', margin: '10px', textAlign: 'center' }}>
+                <div style={{ padding: '10px', margin: '10px' }}>
                     <Switch >
                         <Route exact path='/'>
                             <div>
@@ -32,7 +33,7 @@ export default function HomeRouter(props) {
                         <Route exact path='/userGrud'>                            
                         <Users />                            
                         </Route>
-                        <Route path='/userGrud/add' component={Employee} />
+                        <Route path='/userGrud/:id' component={UserForm} />
                         <Route exact path='/userForm'>
                             <Employee />
                         </Route>
