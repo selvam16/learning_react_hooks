@@ -1,78 +1,96 @@
-import { findIndex, filter } from 'lodash';
-import React, { useReducer } from 'react';
-import data from './data.json';
+import React, { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import { IconButton, Button, Icon, Grid } from '@material-ui/core';
+import { Edit, Delete } from '@material-ui/icons'
+import { capitalize } from 'lodash';
+import { FormUserContext } from '../../App/App';
+import moment from "moment";
 
-const initialState = data;
-
-const reduce = (state = initialState, action) => {
-    const {
-        type,
-        value
-    } = action;
-    let newState = [...state]
-
-    let currentUserIndex = null;
-
-    switch (type) {
-        case 'add':
-            return [...newState, value]
-        case "edit":
-            currentUserIndex = findIndex(newState, { id: value.id });
-            newState[currentUserIndex] = { ...newState[currentUserIndex], ...value }
-            return newState;
-        case 'delete':
-            let currentUser = filter(newState, state => state.id !== value.id);
-            //newState = newState.splice(currentUserIndex, 1)
-            return currentUser;
-        default:
-            return state;
-
-    }
-}
+const useStyles = makeStyles((theme) => ({
+    table: {
+        minWidth: 650,
+    },
+    button: {
+        margin: theme.spacing(1),
+    },
+}));
 
 export default function Users() {
-    const [userData, dispatchAction] = useReducer(reduce, initialState);
+    const history = useHistory();
+    const {
+        userData, userDispatchAction: userAction
+    } = useContext(FormUserContext);
 
-    const handleEdit = (id) => {
-        window.location.href = `/${id}`
+    const handleUpdate = (id) => {
+        history.push(`/userGrud/${id}`)
     };
 
     const handleDelete = id => {
-        window.confirm('Are you sure', () => {
-            alert('hi')
-        })
+        if (window.confirm('Are you sure')) {
+            userAction({ type: 'delete', value: id })
+        }
     };
+    const classes = useStyles();
+
+    console.log(moment(new Date()).format('DD MMM YYYY'))
+
     return (
-        <div className="container">
-            <table className="table">
-                <thead>
-                    <tr>
-                        <td>First Name</td>
-                        <td>Last Name</td>
-                        <td> DOB</td>
-                        <td>Designation</td>
-                        <td>Experience</td>
-                        <td>Acion</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {userData &&
-                        userData.map((user, i) => (
-                            <tr>
-                                <td>{user.firstname}</td>
-                                <td>{user.lastname}</td>
-                                <td>{user.dob}</td>
-                                <td>{user.designation}</td>
-                                <td>{user.experience}</td>
-                                <td>
-                                    <button onClick={() => dispatchAction({ type: 'add', value: { id: Math.floor(Math.random() * 100), firstname: 'firstname' } })}>Add</button>
-                                    <button onClick={() => dispatchAction({ type: 'edit', value: { id: user.id, firstname: 'firstname' } })}>Edit</button>
-                                    <button onClick={() => (window.confirm('Are you sure')) ? dispatchAction({ type: 'delete', value: { id: user.id } }) : ''}>Delete</button>
-                                </td>
-                            </tr>
+        <Grid container>
+            <div style={{ width: '100%', textAlign: 'right' }}>
+
+                <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    endIcon={<Icon>add</Icon>}
+                    onClick={() => handleUpdate(null)}
+                >
+                    Add User
+                </Button>
+            </div>
+            <TableContainer component={Paper}>
+                <Table className={classes.table} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>First Name</TableCell>
+                            <TableCell>Last Name</TableCell>
+                            <TableCell>DOB</TableCell>
+                            <TableCell>Designation</TableCell>
+                            <TableCell>Experience</TableCell>
+                            <TableCell align="center">Action</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {userData.map((row) => (
+                            <TableRow key={capitalize(row.firstName)}>
+                                <TableCell component="th" scope="row">
+                                    {capitalize(row.firstName)}
+                                </TableCell>
+                                <TableCell>{capitalize(row.lastName)}</TableCell>
+                                <TableCell>{moment(row.dob).format("DD MMM YYYY")}</TableCell>
+                                <TableCell>{capitalize(row.designation)}</TableCell>
+                                <TableCell>{capitalize(row.experience)}</TableCell>
+                                <TableCell align="center">
+                                    <IconButton onClick={() => handleUpdate(row.id)}>
+                                        <Edit fontSize='small' />
+                                    </IconButton>
+                                    <IconButton onClick={() => handleDelete(row.id)}>
+                                        <Delete fontSize='small' />
+                                    </IconButton>
+                                </TableCell>
+                            </TableRow>
                         ))}
-                </tbody>
-            </table>
-        </div>
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Grid>
     );
 }
