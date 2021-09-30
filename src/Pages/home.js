@@ -1,5 +1,5 @@
 import React from 'react'
-import { useFetch } from '../Components/CustomCooks/useFetchData'
+import { useFetch } from '../Components/CustomHooks/useFetchData'
 export default function Home(props) {
 
     const {
