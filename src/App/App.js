@@ -4,7 +4,6 @@ import './App.css';
 import Headers from '../Components/header';
 import { makeStyles, createTheme, ThemeProvider, CssBaseline } from '@material-ui/core';
 import HomeRouter from '../HomeRouter';
-import data from './data.json';
 import { findIndex, filter } from 'lodash';
 
 const styles = makeStyles({
@@ -35,6 +34,7 @@ const theme = createTheme({
     }
   }
 })
+export const UserContext = React.createContext();
 
 const initialState = {
   firstName: '',
@@ -45,72 +45,64 @@ const initialState = {
 
 const reduce = (state = initialState, action) => {
   const {
-      type, value
+    type, value
   } = action;
-  switch(type){
-      case 'UpdateFirstName':
-          return {
-              ...state, firstName: value
-          }
-      case 'UpdateLastName':            
-          return {
-              ...state, lastName: value
-          }
-      case 'UpdateAge':          
+  switch (type) {
+    case 'UpdateFirstName':
       return {
-          ...state, age: value
+        ...state, firstName: value
       }
-      case 'OpenDrawer':          
+    case 'UpdateLastName':
       return {
-          ...state, isDrawerOpen: true
+        ...state, lastName: value
       }
-      case 'CloseDrawer':          
+    case 'UpdateAge':
       return {
-          ...state, isDrawerOpen: false
+        ...state, age: value
       }
-      default:
-       return state;
+    case 'OpenDrawer':
+      return {
+        ...state, isDrawerOpen: true
+      }
+    case 'CloseDrawer':
+      return {
+        ...state, isDrawerOpen: false
+      }
+    default:
+      return state;
   }
 }
+
 export const FormUserContext = React.createContext();
 
-const userInitialState = data;
+const userInitialState = [];
 
 const userReduce = (state = userInitialState, action) => {
-    const {
-        type,
-        value
-    } = action;
-    let newState = [...state]
+  const {
+    type,
+    value
+  } = action;
+  let newState = [...state]
 
-    let currentUserIndex = null;
+  let currentUserIndex = null;
 
-    console.log(type, value)
+  switch (type) {
+    case 'add':
+      return [...newState, value]
+    case "edit":
+      currentUserIndex = findIndex(newState, { id: value.id });
+      newState[currentUserIndex] = { ...newState[currentUserIndex], ...value }
+      return newState;
+    case 'delete':
+      let currentUser = filter(newState, state => {
+        return state.id !== parseInt(value)
+      });
+      return currentUser;
+    default:
+      return state;
 
-    switch (type) {
-        case 'add':
-          console.log(newState)
-          const testcons = [...newState, value];
-          console.log(testcons)
-            return [...newState, value]
-        case "edit":
-            currentUserIndex = findIndex(newState, { id: value.id });
-            newState[currentUserIndex] = { ...newState[currentUserIndex], ...value }
-            return newState;
-        case 'delete':
-            let currentUser = filter(newState, state => {
-              console.log(state.id)
-              return state.id !== parseInt(value)
-            });
-            console.log(currentUser)
-            //newState = newState.splice(currentUserIndex, 1)
-            return currentUser;
-        default:
-            return state;
-
-    }
+  }
 }
-export const UserContext = React.createContext();
 function App() {
   const classes = styles();
   const [user, userDispatch] = useReducer(reduce, initialState)
@@ -118,15 +110,15 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <UserContext.Provider value={{user, userDispatch}}>
-      <FormUserContext.Provider value={{ userData, userDispatchAction }}>
+      <UserContext.Provider value={{ user, userDispatch }}>
+        <FormUserContext.Provider value={{ userData, userDispatchAction }}>
 
-      <div className={classes.app_main}>
-        <Headers />
-        <HomeRouter />
-      </div>
-      <CssBaseline />
-      </FormUserContext.Provider>
+          <div className={classes.app_main}>
+            <Headers />
+            <HomeRouter />
+          </div>
+          <CssBaseline />
+        </FormUserContext.Provider>
 
       </UserContext.Provider>
     </ThemeProvider>
