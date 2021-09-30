@@ -3,6 +3,7 @@ import {
     BrowserRouter as Router
     , Route, Switch
 } from "react-router-dom";
+import Home from './Pages/home';
 import { MouseMoveContainer } from './Components/MouseMoveContainer';
 import HooksInterval from './Components/HooksInterval';
 import HooksCounter from './Components/HooksCounter';
@@ -27,9 +28,7 @@ export default function HomeRouter(props) {
                 <div style={{ padding: '10px', margin: '10px' }}>
                     <Switch >
                         <Route exact path='/'>
-                            <div>
-                                <span>Text</span>
-                            </div>
+                            <Home />
                         </Route>
                         <Route exact path='/autocomplete'>
                             <AutoComplete />
