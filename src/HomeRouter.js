@@ -15,6 +15,7 @@ import SideMenu from './Components/sideMenu';
 import Employee from './Pages/employee';
 import Users from './Components/User/users'
 import UserForm from './Components/User/userForm'
+import AutoComplete from './Components/autocomplete'
 
 import './App/App.css'
 export default function HomeRouter(props) {
@@ -30,8 +31,11 @@ export default function HomeRouter(props) {
                                 <span>Text</span>
                             </div>
                         </Route>
-                        <Route exact path='/userGrud'>                            
-                        <Users />                            
+                        <Route exact path='/autocomplete'>
+                            <AutoComplete />
+                        </Route>
+                        <Route exact path='/userGrud'>
+                            <Users />
                         </Route>
                         <Route path='/userGrud/:id' component={UserForm} />
                         <Route exact path='/userForm'>
