@@ -2,6 +2,8 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 
 export const useFetch = (method, url, body) => {
+    const cancelTokenSource = axios.CancelToken.source();
+
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState([])
     const [error, setError] = useState(null)
@@ -13,7 +15,8 @@ export const useFetch = (method, url, body) => {
                 const res = await axios({
                     method: method,
                     url: url,
-                    body: body
+                    body: body,                    
+                    cancelToken: cancelTokenSource.token
                 })
 
                 const data = await res?.data
@@ -28,7 +31,7 @@ export const useFetch = (method, url, body) => {
 
         fetchData()
 
-        return (() => console.log('un mounting'))
+        return (() => {console.log('un mounting'); cancelTokenSource.cancel()})
     }, [])
 
     return { loading, data, error }
