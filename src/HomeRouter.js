@@ -3,7 +3,7 @@ import {
     BrowserRouter as Router
     , Route, Switch
 } from "react-router-dom";
-import Home from './Pages/home';
+// import Home from './Pages/home';
 import { MouseMoveContainer } from './Components/MouseMoveContainer';
 import HooksInterval from './Components/HooksInterval';
 import HooksCounter from './Components/HooksCounter';
