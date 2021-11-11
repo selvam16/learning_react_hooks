@@ -32,7 +32,7 @@ export const useFetch = (method, url, body) => {
         fetchData()
 
         return (() => {console.log('un mounting'); cancelTokenSource.cancel()})
-    }, [])
+    }, [body, cancelTokenSource, method, url])
 
     return { loading, data, error }
 }
