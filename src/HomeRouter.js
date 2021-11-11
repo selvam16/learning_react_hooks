@@ -28,7 +28,10 @@ export default function HomeRouter(props) {
                 <div style={{ padding: '10px', margin: '10px' }}>
                     <Switch >
                         <Route exact path='/'>
+                            {/* <Suspense fallback={<div>loading...</div>}>
                             <Home />
+                            </Suspense> */}
+                            test
                         </Route>
                         <Route exact path='/autocomplete'>
                             <AutoComplete />
